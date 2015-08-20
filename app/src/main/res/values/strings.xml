@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">JoinEvents</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <!-- use at SignIn for button -->
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+
+    <!-- use at sign_up -->
+    <string name="signUpEmail">Email</string>
+    <string name="signUpPassword">Password</string>
+    <string name="signUpPassword2">password2</string>
+    <string name="signUpName">Name</string>
+    <string name="signUpGenderMan">Male</string>
+    <string name="signUpGenderWoman">Female</string>
+    <string name="signUpImage">Image</string>
+</resources>
