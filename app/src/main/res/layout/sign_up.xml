@@ -39,6 +39,7 @@
             android:id="@+id/signUpPassword_e"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
             android:layout_weight="2"/>
     </LinearLayout>
 
@@ -58,6 +59,7 @@
             android:id="@+id/signUpPassword2_e"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
             android:layout_weight="2"/>
     </LinearLayout>
 
@@ -109,8 +111,8 @@
             android:text="@string/signUpImage"/>
         <ImageView
             android:id="@+id/singUpShowImage"
-            android:layout_width="10dp"
-            android:layout_height="10dp" />
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
     </LinearLayout>
 
 </LinearLayout>

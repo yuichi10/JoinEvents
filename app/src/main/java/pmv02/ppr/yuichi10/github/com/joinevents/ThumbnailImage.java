@@ -22,7 +22,7 @@ import java.util.Map;
  * Created by yuichi on 8/20/15.
  */
 public class ThumbnailImage extends Activity implements AdapterView.OnItemClickListener{
-    Map<Long, String>imageMap = new HashMap<Long, String>();
+    ArrayList<String>imageMap = new ArrayList<String>();
     ArrayList<Bitmap>imageList = new ArrayList<Bitmap>();
 
     @Override
@@ -45,7 +45,7 @@ public class ThumbnailImage extends Activity implements AdapterView.OnItemClickL
             do{
                 long idImage = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media._ID));
                 String pathImage = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-                imageMap.put(idImage, pathImage);
+                imageMap.add(pathImage);
                 Bitmap bmp = MediaStore.Images.Thumbnails.getThumbnail(resolver,idImage,MediaStore.Images.Thumbnails.MINI_KIND,null);
 
                 imageList.add(bmp);
@@ -64,9 +64,10 @@ public class ThumbnailImage extends Activity implements AdapterView.OnItemClickL
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        
+
         Intent intent = new Intent();
-        intent.putExtra("key", "success");
+        Log.d("aa", imageList.get(position)+"");
+        intent.putExtra("key", imageMap.get(position));
         setResult(Activity.RESULT_OK, intent);
         finish();
     }
