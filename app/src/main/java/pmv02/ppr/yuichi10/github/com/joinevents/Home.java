@@ -1,8 +1,8 @@
 package pmv02.ppr.yuichi10.github.com.joinevents;
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.content.Intent;
+import android.location.Criteria;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,31 +11,51 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-
-import java.util.List;
 
 /**
  * Created by yuichi on 8/20/15.
  */
-public class Home extends Activity implements View.OnClickListener{
+public class Home extends Activity implements View.OnClickListener, Gps.GetPlaceCallBack{
     ArrayAdapter<String> adapter;
+    //gps
+    private Gps mGps;
+    //criteria
+    private Criteria mCriteria;
+    //does get place
+    private boolean isGetplace = false;
+    //list view to show groups
+    ListView mListView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
-        Log.d("Intent", "success");
+
         Intent intent = getIntent();
+        //get gps
+        mGps = new Gps(this.getApplicationContext());
+        //set callback
+        mGps.setCallbacks(this);
+        //get current place
+        mGps.startGps();
         //grope name adapter
+        //set List view
+        this.mListView = (ListView)this.findViewById(R.id.homeList);
+        getListMountHeight(mListView);
+
+        //make group button
+        Button makeGroupButton = (Button)findViewById(R.id.homeMakeGrope);
+        makeGroupButton.setOnClickListener(this);
+        //show group list when the place is found
+    }
+
+    //show groups list
+    public void showList(){
         adapter = new ArrayAdapter<String>(this, R.layout.colmun_home_list);
         //get group list
         getGroups();
-        ListView listView = (ListView)this.findViewById(R.id.homeList);
-        getListMountHeight(listView);
-        listView.setAdapter(adapter);
-
-        Button makeGroupButton = (Button)findViewById(R.id.homeMakeGrope);
-        makeGroupButton.setOnClickListener(this);
+        //set groups to list
+        this.mListView.setAdapter(adapter);
     }
 
     public void getListMountHeight(ListView lv){
@@ -62,6 +82,14 @@ public class Home extends Activity implements View.OnClickListener{
         for(int i=0; i < 20; ++i){
             adapter.add("aaaaaaa" + i);
         }
+    }
+
+    //call back when the place was found
+    public void isGetPlaceCB(){
+        isGetplace = true;
+        mGps.stopGps();
+        Log.d("aaa", "success");
+        showList();
     }
 
     @Override
