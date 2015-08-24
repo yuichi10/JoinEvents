@@ -31,7 +31,7 @@ public class SignIn extends ActionBarActivity implements View.OnClickListener{
         Button doSignIn = (Button)findViewById(R.id.doSignIn);
         doSignIn.setOnClickListener(this);
         //button for sign up
-        Button doSignUp = (Button)findViewById(R.id.doSignUp);
+        Button doSignUp = (Button)findViewById(R.id.signInSignUp);
         doSignUp.setOnClickListener(this);
     }
 
@@ -75,7 +75,7 @@ public class SignIn extends ActionBarActivity implements View.OnClickListener{
                 startActivity(intent);
                 break;
             //when user try to sign up
-            case R.id.doSignUp:
+            case R.id.signInSignUp:
                 //go to the page for sign up
                 intent.setClassName(packageName, packageName + ".SignUP");
                 startActivity(intent);

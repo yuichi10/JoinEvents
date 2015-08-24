@@ -33,6 +33,9 @@ public class SignUP extends Activity implements View.OnClickListener{
         //the button when user try to choose images
         Button thumbnail = (Button)findViewById(R.id.signUpGetImage);
         thumbnail.setOnClickListener(this);
+        //the button for really sign up
+        Button signUp = (Button)findViewById(R.id.doSignUp);
+        signUp.setOnClickListener(this);
 
         //set email width. try not to change width
         email = (EditText)findViewById(R.id.signUpEmail_e);
@@ -86,6 +89,8 @@ public class SignUP extends Activity implements View.OnClickListener{
                 Intent intent = new Intent();
                 intent.setClassName(SignIn.packageName, SignIn.packageName + ".ThumbnailImage");
                 startActivityForResult(intent, this.mRequestCode);
+                break;
+            case R.id.doSignUp:
                 break;
         }
     }
