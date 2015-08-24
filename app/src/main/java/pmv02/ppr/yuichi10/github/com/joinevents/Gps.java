@@ -28,7 +28,7 @@ public class Gps implements LocationListener {
     boolean isGetPlace = false;
 
     public interface GetPlaceCallBack{
-        public void isGetPlaceCB();
+        public void isGetPlaceCB(double lon, double lat);
     }
     private GetPlaceCallBack _mGetPlaceCallBack;
 
@@ -65,12 +65,20 @@ public class Gps implements LocationListener {
         mLocationManager.removeUpdates(this);
     }
 
+    public double getLongitude(){
+        return mLongitude;
+    }
+
+    public double getLatitude(){
+        return mLatitude;
+    }
+
     @Override
     public void onLocationChanged(Location location) {
         mLongitude = location.getLongitude();
         mLatitude  = location.getLatitude();
         Log.d("aaa","changed");
-        _mGetPlaceCallBack.isGetPlaceCB();
+        _mGetPlaceCallBack.isGetPlaceCB(mLongitude, mLatitude);
     }
 
     @Override

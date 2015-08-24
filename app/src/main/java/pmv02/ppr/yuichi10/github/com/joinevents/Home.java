@@ -25,6 +25,9 @@ public class Home extends Activity implements View.OnClickListener, Gps.GetPlace
     private boolean isGetplace = false;
     //list view to show groups
     ListView mListView;
+    //longitude and latitude
+    double mLongitude;
+    double mLatitude;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,9 +88,11 @@ public class Home extends Activity implements View.OnClickListener, Gps.GetPlace
     }
 
     //call back when the place was found
-    public void isGetPlaceCB(){
+    public void isGetPlaceCB(double lon, double lat){
         isGetplace = true;
         mGps.stopGps();
+        this.mLongitude = lon;
+        this.mLatitude  = lat;
         Log.d("aaa", "success");
         showList();
     }
