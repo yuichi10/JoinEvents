@@ -4,20 +4,16 @@
     android:layout_height="match_parent">
 
     <!-- Event name -->
-    <LinearLayout
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Event Name"/>
+
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Event Name"/>
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"/>
-    </LinearLayout>
+        android:layout_weight="2"/>
 
     <LinearLayout
         android:layout_width="match_parent"
