@@ -18,6 +18,7 @@
         <activity android:name=".Home" android:label="Home" />
         <activity android:name=".SignUP" android:label="signUp" />
         <activity android:name=".ThumbnailImage" android:label="ThumbnailImage"/>
+        <activity android:name=".MakeGroup" android:label="MakeGroup"/>
     </application>
 
 </manifest>

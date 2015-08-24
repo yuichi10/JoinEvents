@@ -60,15 +60,21 @@ public class SignIn extends ActionBarActivity implements View.OnClickListener{
 
         Intent intent = new Intent();
         switch (v.getId()){
+            //when sing in button was pushed
             case R.id.doSignIn:
+                //get ID and password
                 String strID = idSignIn.getText().toString();
                 String strPass = passwordSignIn.getText().toString();
+                //make password complex
                 strPass = encodePassdigiest(strPass);
                 Log.d("Intent","push button");
+                //if the password and ID was collect, go to Home activity
                 intent.setClassName(packageName, packageName + ".Home");
                 startActivity(intent);
                 break;
+            //when user try to sign up
             case R.id.doSignUp:
+                //go to the page for sign up
                 intent.setClassName(packageName, packageName + ".SignUP");
                 startActivity(intent);
                 break;
@@ -76,7 +82,7 @@ public class SignIn extends ActionBarActivity implements View.OnClickListener{
     }
 
 
-
+    //MD5
     public String encodePassdigiest(String password){
         byte[] enclyptedHash=null;
         // MD5で暗号化したByte型配列を取得する

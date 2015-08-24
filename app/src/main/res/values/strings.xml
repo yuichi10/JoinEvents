@@ -15,4 +15,9 @@
     <string name="signUpGenderMan">Male</string>
     <string name="signUpGenderWoman">Female</string>
     <string name="signUpImage">Image</string>
+
+    <!-- use at make group -->
+    <string name="makeGroupEventName">Event Name</string>
+    <string name="makeGroupPlace">Venue</string>
+    <string name="makeGroupWhen">Time</string>
 </resources>

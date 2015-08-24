@@ -9,29 +9,32 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by yuichi on 8/20/15.
  */
-public class ThumbnailImage extends Activity implements AdapterView.OnItemClickListener{
+public class ThumbnailImage extends Activity implements AdapterView.OnItemClickListener, AbsListView.OnScrollListener{
     ArrayList<String>imageMap = new ArrayList<String>();
     ArrayList<Bitmap>imageList = new ArrayList<Bitmap>();
+    Cursor cursor;
+    ContentResolver resolver;
+    BitmapAdapter adapter;
+    GridView gridView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.thumbnail_image);
 
-        ContentResolver resolver = getContentResolver();
-        Cursor cursor = resolver.query(
+        //get Every Image from external contents at android
+        this.resolver = getContentResolver();
+        this.cursor = resolver.query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 null,
                 null,
@@ -40,35 +43,56 @@ public class ThumbnailImage extends Activity implements AdapterView.OnItemClickL
         );
         Log.v("MEDIA", Arrays.toString(cursor.getColumnNames())); // 項目名一覧
         Log.v("MEDIA", "Image files = " + cursor.getCount()); // 取得件数
+        //grid view
+        this.gridView = (GridView)findViewById(R.id.imageGrid);
+        gridView.setOnItemClickListener(this);
+        //get images!
+        //but now it is too a lot so just get 20 thumbnails
+        getThumbnail();
+    }
+
+    private void getThumbnail(){
         int i = 0;
+        cursor.getPosition();
         if(cursor.moveToFirst()){
             do{
                 long idImage = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media._ID));
                 String pathImage = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
                 imageMap.add(pathImage);
                 Bitmap bmp = MediaStore.Images.Thumbnails.getThumbnail(resolver,idImage,MediaStore.Images.Thumbnails.MINI_KIND,null);
-
+                Log.v("aa",cursor.getPosition() + "");
                 imageList.add(bmp);
-                ++i;
-                if(i == 20){
+                i++;
+                if(i == 40){
                     break;
                 }
             }while(cursor.moveToNext());
         }
-        BitmapAdapter adapter = new BitmapAdapter(
+        //set thumbnails to gridview
+        this.adapter = new BitmapAdapter(
                 getApplicationContext(), R.layout.image_list_item, imageList);
-        GridView gridView = (GridView)findViewById(R.id.imageGrid);
-        gridView.setOnItemClickListener(this);
         gridView.setAdapter(adapter);
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
         Intent intent = new Intent();
         Log.d("aa", imageList.get(position)+"");
+        //I do not know but I can not set bmp image
+        //thus now I set images url
         intent.putExtra("key", imageMap.get(position));
         setResult(Activity.RESULT_OK, intent);
         finish();
+    }
+
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
     }
 }

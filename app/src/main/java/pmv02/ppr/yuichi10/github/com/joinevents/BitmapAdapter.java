@@ -36,6 +36,8 @@ public class BitmapAdapter extends ArrayAdapter<Bitmap> {
             convertView = inflater.inflate(resourceId, null);
         }
 
+
+
         ImageView view = (ImageView) convertView;
         view.setImageBitmap(getItem(position));
 
