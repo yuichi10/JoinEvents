@@ -14,8 +14,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class SignIn extends ActionBarActivity implements View.OnClickListener{
+    //edit text for id and password
     EditText idSignIn;
     EditText passwordSignIn;
+    //the path of this application
     static String packageName = "pmv02.ppr.yuichi10.github.com.joinevents";
 
     @Override

@@ -93,7 +93,6 @@ public class Home extends Activity implements View.OnClickListener, Gps.GetPlace
         mGps.stopGps();
         this.mLongitude = lon;
         this.mLatitude  = lat;
-        Log.d("aaa", "success");
         showList();
     }
 
@@ -101,7 +100,6 @@ public class Home extends Activity implements View.OnClickListener, Gps.GetPlace
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.homeMakeGrope:
-                Log.d("aa","aa");
                 String className = ".MakeGroup";
                 Intent intent = new Intent();
                 intent.setClassName(SignIn.packageName, SignIn.packageName + className);

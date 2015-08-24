@@ -20,8 +20,11 @@ import java.util.Arrays;
  * Created by yuichi on 8/20/15.
  */
 public class ThumbnailImage extends Activity implements AdapterView.OnItemClickListener, AbsListView.OnScrollListener{
-    ArrayList<String>imageMap = new ArrayList<String>();
+    //set thumbnails path
+    ArrayList<String>imagePaths = new ArrayList<String>();
+    //set bitmap image of thumbnail
     ArrayList<Bitmap>imageList = new ArrayList<Bitmap>();
+    //
     Cursor cursor;
     ContentResolver resolver;
     BitmapAdapter adapter;
@@ -53,15 +56,22 @@ public class ThumbnailImage extends Activity implements AdapterView.OnItemClickL
 
     private void getThumbnail(){
         int i = 0;
+        //get current position
         cursor.getPosition();
+        //move to first
         if(cursor.moveToFirst()){
             do{
+                //get id and path
                 long idImage = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media._ID));
                 String pathImage = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-                imageMap.add(pathImage);
+                //add image path to imagePaths
+                imagePaths.add(pathImage);
                 Bitmap bmp = MediaStore.Images.Thumbnails.getThumbnail(resolver,idImage,MediaStore.Images.Thumbnails.MINI_KIND,null);
                 Log.v("aa",cursor.getPosition() + "");
+                //set thumbnail bitmap to imageList
                 imageList.add(bmp);
+                //now just show 40 picture
+                //coz if set everything the memory will break
                 i++;
                 if(i == 40){
                     break;
@@ -74,17 +84,17 @@ public class ThumbnailImage extends Activity implements AdapterView.OnItemClickL
         gridView.setAdapter(adapter);
     }
 
+    //when the thumbnail picture are selected
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent();
         Log.d("aa", imageList.get(position)+"");
         //I do not know but I can not set bmp image
         //thus now I set images url
-        intent.putExtra("key", imageMap.get(position));
+        intent.putExtra("key", imagePaths.get(position));
         setResult(Activity.RESULT_OK, intent);
         finish();
     }
-
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {

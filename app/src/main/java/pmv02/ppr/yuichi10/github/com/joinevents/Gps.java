@@ -6,7 +6,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 
 /**
  * Created by yuichi on 8/24/15.
@@ -27,24 +26,32 @@ public class Gps implements LocationListener {
     //get the place or not
     boolean isGetPlace = false;
 
+    //set interface for call back
     public interface GetPlaceCallBack{
         public void isGetPlaceCB(double lon, double lat);
     }
     private GetPlaceCallBack _mGetPlaceCallBack;
 
+    //set call backs
     public void setCallbacks(GetPlaceCallBack getPlaceCallBack){
         _mGetPlaceCallBack = getPlaceCallBack;
     }
 
+    //Constructor
     public Gps(Context context){
+        //set context
         this.mContext = context;
+        //make criteria
         mCriteria = new Criteria();
     }
 
     //setProvider
     public void setProvider(){
+        //set how power they use
         mCriteria.setPowerRequirement(Criteria.POWER_LOW);
+        //set how much accuracy
         mCriteria.setAccuracy(Criteria.ACCURACY_COARSE);
+        //get provider name from conditions
         mProvider = mLocationManager.getBestProvider(mCriteria, true);
     }
 
@@ -57,7 +64,6 @@ public class Gps implements LocationListener {
         mLocationManager = (LocationManager)mContext.getSystemService(Context.LOCATION_SERVICE);
         setProvider();
         mLocationManager.requestLocationUpdates(mProvider, 0, 0, this);
-        Log.d("aaa","start");
     }
 
     //stop to get place
@@ -65,19 +71,22 @@ public class Gps implements LocationListener {
         mLocationManager.removeUpdates(this);
     }
 
+    //give the value of longitude
     public double getLongitude(){
         return mLongitude;
     }
 
+    //give the value of latitude
     public double getLatitude(){
         return mLatitude;
     }
 
     @Override
     public void onLocationChanged(Location location) {
+        //set coordinate
         mLongitude = location.getLongitude();
         mLatitude  = location.getLatitude();
-        Log.d("aaa","changed");
+        //call callback function
         _mGetPlaceCallBack.isGetPlaceCB(mLongitude, mLatitude);
     }
 
