@@ -25,4 +25,6 @@
     <!-- 位置情報 ネットワークから -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_UPDATES" />
+    <!-- to connect internet -->
+    <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>
