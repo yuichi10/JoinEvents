@@ -91,6 +91,10 @@ public class SignUP extends Activity implements View.OnClickListener{
                 startActivityForResult(intent, this.mRequestCode);
                 break;
             case R.id.doSignUp:
+                String server = "www.drk7.jp";
+                String path  = "weather/xml/27.xml";
+                HttpCommunication hc = new HttpCommunication(server, path);
+                hc.Get();
                 break;
         }
     }

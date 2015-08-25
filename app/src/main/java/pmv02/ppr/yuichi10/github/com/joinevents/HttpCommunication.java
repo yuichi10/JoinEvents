@@ -8,6 +8,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -29,20 +30,34 @@ public class HttpCommunication {
     //Post parameters
     List<NameValuePair> postParams = new ArrayList<NameValuePair>();
 
-    public void HttpCommunication(String serverName, String path){
+    public HttpCommunication(String serverName, String path){
         //Uri for get
         mBuilder = new Uri.Builder();
-        mBuilder.scheme("http");
-        mBuilder.encodedAuthority(serverName);
-        mBuilder.path("/" + path + "/");
+        setServerName(serverName);
+        if(path != "") {
+            mBuilder.path("/" + path + "/");
+        }
         //Uri for post
         mUri = "http:" + serverName + "/" + path + "/";
     }
 
-    public void setURL(String serverName, String path){
+    public HttpCommunication(String serverName){
+        //Uri for get
+        mBuilder = new Uri.Builder();
+        setServerName(serverName);
+        //Uri for post
+        mUri = "http:" + serverName;
+    }
+
+    private void setServerName(String str){
+        //Uri for get
         mBuilder.scheme("http");
-        mBuilder.encodedAuthority(serverName);
-        mBuilder.path("/"+path+"/");
+        mBuilder.encodedAuthority(str);
+    }
+
+    public void setURL(String serverName, String path){
+        setServerName(serverName);
+        mBuilder.path("/" + path);
     }
 
     //set parameter for get
@@ -57,30 +72,35 @@ public class HttpCommunication {
 
     //try to do get
     public void Get(){
-        HttpGet request = new HttpGet(mBuilder.build().toString());
-        DefaultHttpClient httpClient = new DefaultHttpClient();
-        try{
-            String result = httpClient.execute(request, new ResponseHandler<String>() {
-                @Override
-                public String handleResponse(HttpResponse httpResponse) throws ClientProtocolException, IOException {
-                    switch (httpResponse.getStatusLine().getStatusCode()){
-                        case HttpStatus.SC_OK:
-                            return EntityUtils.toString(httpResponse.getEntity(), "UTF-8");
-                        case HttpStatus.SC_NOT_FOUND:
-                            throw new RuntimeException("There are no data");
-                        default:
-                            throw new RuntimeException("something wrong");
-                    }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DefaultHttpClient httpClient = new DefaultHttpClient();
+                HttpGet request = new HttpGet(mBuilder.build().toString());
+                try{
+                    String result = httpClient.execute(request, new ResponseHandler<String>() {
+                        @Override
+                        public String handleResponse(HttpResponse httpResponse) throws ClientProtocolException, IOException {
+                            switch (httpResponse.getStatusLine().getStatusCode()){
+                                case HttpStatus.SC_OK:
+                                    return EntityUtils.toString(httpResponse.getEntity(), "UTF-8");
+                                case HttpStatus.SC_NOT_FOUND:
+                                    throw new RuntimeException("There are no data");
+                                default:
+                                    throw new RuntimeException("something wrong");
+                            }
+                        }
+                    });
+                    Log.d("test", result);
+                }catch (ClientProtocolException e){
+                    throw new RuntimeException(e);
+                }catch (IOException e){
+                    throw new RuntimeException(e);
+                }finally {
+                    httpClient.getConnectionManager().shutdown();
                 }
-            });
-            Log.d("test", result);
-        }catch (ClientProtocolException e){
-            throw new RuntimeException(e);
-        }catch (IOException e){
-            throw new RuntimeException(e);
-        }finally {
-            httpClient.getConnectionManager().shutdown();
-        }
+            }
+        }).start();
     }
 
     public void Post() {
