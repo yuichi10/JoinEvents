@@ -35,7 +35,7 @@ public class HttpCommunication {
         mBuilder = new Uri.Builder();
         setServerName(serverName);
         if(path != "") {
-            mBuilder.path("/" + path + "/");
+            mBuilder.path("/" + path);
         }
         //Uri for post
         mUri = "http:" + serverName + "/" + path + "/";
@@ -46,7 +46,7 @@ public class HttpCommunication {
         mBuilder = new Uri.Builder();
         setServerName(serverName);
         //Uri for post
-        mUri = "http:" + serverName;
+        mUri = "http://" + serverName;
     }
 
     private void setServerName(String str){
@@ -76,7 +76,8 @@ public class HttpCommunication {
             @Override
             public void run() {
                 DefaultHttpClient httpClient = new DefaultHttpClient();
-                HttpGet request = new HttpGet(mBuilder.build().toString());
+                String url = mBuilder.build().toString();
+                HttpGet request = new HttpGet(url);
                 try{
                     String result = httpClient.execute(request, new ResponseHandler<String>() {
                         @Override
