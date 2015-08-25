@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 /**
  * Created by yuichi on 8/20/15.
@@ -24,6 +27,7 @@ public class SignUP extends Activity implements View.OnClickListener{
     EditText password1;
     EditText password2;
     EditText name;
+    RadioGroup gender;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +53,7 @@ public class SignUP extends Activity implements View.OnClickListener{
         //set name width. not to change width
         name = (EditText)findViewById(R.id.signUpName_e);
         name.setWidth(name.getWidth());
+        gender = (RadioGroup)findViewById(R.id.signUpGender);
     }
 
     public void onActivityResult( int requestCode, int resultCode, Intent intent ){
@@ -91,11 +96,24 @@ public class SignUP extends Activity implements View.OnClickListener{
                 startActivityForResult(intent, this.mRequestCode);
                 break;
             case R.id.doSignUp:
-                String server = "115.65.57.253:8080";
-                String path  = "firstTom/servlet/hello";
-                //server = "google.co.jp";
+                //get server info
+                String server = DataManage.server;
+                String path   = DataManage.serverPath;
+                //get editor info
+                String sEmail = email.getText().toString();
+                String sPassword = password1.getText().toString();
+                String sName     = name.getText().toString();
+                int iGender = gender.getCheckedRadioButtonId();
+                String sGender = "NOT";
+                if(iGender != -1){
+                    sGender = ((RadioButton)findViewById(iGender)).getText().toString();
+                }
                 HttpCommunication hc = new HttpCommunication(server,path);
-                hc.setGetParameter("message", "success");
+                hc.setGetParameter(DataManage.httpDemand, DataManage.httpSignUp);
+                hc.setGetParameter(DataManage.httpID, sEmail);
+                hc.setGetParameter(DataManage.httpPassword, sPassword);
+                hc.setGetParameter(DataManage.httpName, sName);
+                hc.setGetParameter(DataManage.httpGender, sGender);
                 hc.Get();
                 break;
         }
