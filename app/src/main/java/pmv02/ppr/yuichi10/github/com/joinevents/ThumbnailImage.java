@@ -15,6 +15,7 @@ import android.widget.GridView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Handler;
 
 /**
  * Created by yuichi on 8/20/15.
@@ -29,12 +30,13 @@ public class ThumbnailImage extends Activity implements AdapterView.OnItemClickL
     ContentResolver resolver;
     BitmapAdapter adapter;
     GridView gridView;
+    //handler for another thread
+    Handler mHandler;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.thumbnail_image);
-
         //get Every Image from external contents at android
         this.resolver = getContentResolver();
         this.cursor = resolver.query(
@@ -55,33 +57,48 @@ public class ThumbnailImage extends Activity implements AdapterView.OnItemClickL
     }
 
     private void getThumbnail(){
-        int i = 0;
-        //get current position
-        cursor.getPosition();
-        //move to first
-        if(cursor.moveToFirst()){
-            do{
-                //get id and path
-                long idImage = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media._ID));
-                String pathImage = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-                //add image path to imagePaths
-                imagePaths.add(pathImage);
-                Bitmap bmp = MediaStore.Images.Thumbnails.getThumbnail(resolver,idImage,MediaStore.Images.Thumbnails.MINI_KIND,null);
-                Log.v("aa",cursor.getPosition() + "");
-                //set thumbnail bitmap to imageList
-                imageList.add(bmp);
-                //now just show 40 picture
-                //coz if set everything the memory will break
-                i++;
-                if(i == 40){
-                    break;
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int i = 0;
+                //get current position
+                cursor.getPosition();
+                //move to first
+                if(cursor.moveToFirst()){
+                    do{
+                        //get id and path
+                        long idImage = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media._ID));
+                        String pathImage = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+                        //add image path to imagePaths
+                        imagePaths.add(pathImage);
+                        Bitmap bmp = MediaStore.Images.Thumbnails.getThumbnail(resolver,idImage,MediaStore.Images.Thumbnails.MINI_KIND,null);
+                        Log.v("aa",cursor.getPosition() + "");
+                        //set thumbnail bitmap to imageList
+                        imageList.add(bmp);
+                        //now just show 40 picture
+                        //coz if set everything the memory will break
+                        i++;
+                        if(i == 40){
+                            break;
+                        }
+                    }while(cursor.moveToNext());
                 }
-            }while(cursor.moveToNext());
-        }
+                gridView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter = new BitmapAdapter(
+                                getApplicationContext(), R.layout.image_list_item, imageList);
+                        gridView.setAdapter(adapter);
+                    }
+                });
+            }
+        }).start();
+    }
+
+    public void setThumbnail(){
         //set thumbnails to gridview
-        this.adapter = new BitmapAdapter(
-                getApplicationContext(), R.layout.image_list_item, imageList);
-        gridView.setAdapter(adapter);
+
     }
 
     //when the thumbnail picture are selected
