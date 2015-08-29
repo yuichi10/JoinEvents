@@ -98,7 +98,7 @@ public class SignUP extends Activity implements View.OnClickListener{
             case R.id.doSignUp:
                 //get server info
                 String server = DataManage.server;
-                String path   = DataManage.serverPath;
+                String path   = "/";
                 //get editor info
                 String sEmail = email.getText().toString();
                 String sPassword = password1.getText().toString();

@@ -8,7 +8,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -29,6 +28,7 @@ public class HttpCommunication {
     String mUri;
     //Post parameters
     List<NameValuePair> postParams = new ArrayList<NameValuePair>();
+
 
     public HttpCommunication(String serverName, String path){
         //Uri for get
@@ -71,7 +71,8 @@ public class HttpCommunication {
     }
 
     //try to do get
-    public void Get(){
+    public String Get(){
+        String str = "";
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -100,6 +101,7 @@ public class HttpCommunication {
                 }finally {
                     httpClient.getConnectionManager().shutdown();
                 }
+
             }
         }).start();
     }

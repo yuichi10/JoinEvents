@@ -5,8 +5,8 @@ package pmv02.ppr.yuichi10.github.com.joinevents;
  */
 public class DataManage {
     //when connect to server
-    static String server = "115.65.57.253:8080";
-    static String serverPath   = "firstTom/servlet/hello";
+    //static String server = "115.65.57.253:8080";
+    static String server = "192.168.11.3:9898";
     //use these ward when connect to server
     static String httpDemand = "Demand";
     static String httpSignUp = "SignUp";

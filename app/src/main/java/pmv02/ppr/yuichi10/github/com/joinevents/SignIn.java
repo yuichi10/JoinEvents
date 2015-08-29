@@ -64,12 +64,16 @@ public class SignIn extends ActionBarActivity implements View.OnClickListener{
         switch (v.getId()){
             //when sing in button was pushed
             case R.id.doSignIn:
+                //get server info
+                String server = DataManage.server;
+                String path   = "/login";
                 //get ID and password
                 String strID = idSignIn.getText().toString();
                 String strPass = passwordSignIn.getText().toString();
-                //make password complex
-                strPass = encodePassdigiest(strPass);
-                Log.d("Intent","push button");
+                HttpCommunication hc = new HttpCommunication(server, path);
+                hc.setPostParameter("Id", strID);
+                hc.setPostParameter("Password", strPass);
+
                 //if the password and ID was collect, go to Home activity
                 intent.setClassName(packageName, packageName + ".Home");
                 startActivity(intent);
