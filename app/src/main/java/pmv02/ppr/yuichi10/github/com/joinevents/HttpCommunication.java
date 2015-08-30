@@ -71,8 +71,7 @@ public class HttpCommunication {
     }
 
     //try to do get
-    public String Get(){
-        String str = "";
+    public void Get(){
         new Thread(new Runnable() {
             @Override
             public void run() {
