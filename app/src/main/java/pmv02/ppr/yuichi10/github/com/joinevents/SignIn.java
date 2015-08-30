@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import org.json.JSONObject;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -19,6 +21,16 @@ public class SignIn extends ActionBarActivity implements View.OnClickListener{
     EditText passwordSignIn;
     //the path of this application
     static String packageName = "pmv02.ppr.yuichi10.github.com.joinevents";
+
+    //data for json analyze
+    static String errPasskey = "ErrPass";
+    static String errIdkey   = "ErrId";
+    static String sessionKey = "SessionId";
+
+    //data responses
+    String errPassword = "";
+    String errId       = "";
+    String mSessionID   = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +85,9 @@ public class SignIn extends ActionBarActivity implements View.OnClickListener{
                 HttpCommunication hc = new HttpCommunication(server, path);
                 hc.setPostParameter("Id", strID);
                 hc.setPostParameter("Password", strPass);
-                hc.Post();
+                String response = hc.Post();
+                analyseJson(response);
+
                 //if the password and ID was collect, go to Home activity
                 intent.setClassName(packageName, packageName + ".Home");
                 startActivity(intent);
@@ -85,6 +99,21 @@ public class SignIn extends ActionBarActivity implements View.OnClickListener{
                 startActivity(intent);
                 break;
         }
+    }
+
+    public void analyseJson(String jStr){
+        try {
+            JSONObject json = new JSONObject(jStr);
+            this.errPassword = json.getString(errPasskey);
+            this.errId       = json.getString(errIdkey);
+            this.mSessionID   = json.getString(sessionKey);
+            Log.d("aaa",errPassword);
+            Log.d("aaa",errId);
+            Log.d("aaa",mSessionID);
+        }catch (Exception e){
+
+        }
+
     }
 
 
