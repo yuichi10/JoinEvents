@@ -38,7 +38,7 @@ public class HttpCommunication {
             mBuilder.path("/" + path);
         }
         //Uri for post
-        mUri = "http:" + serverName + "/" + path + "/";
+        mUri = "http://" + serverName + "/" + path;
     }
 
     public HttpCommunication(String serverName){
@@ -105,15 +105,20 @@ public class HttpCommunication {
         }).start();
     }
 
-    public void Post() {
-        HttpPost request = new HttpPost(mUri);
-        DefaultHttpClient httpClient = new DefaultHttpClient();
-        HttpResponse res = null;
-        try {
-            request.setEntity(new UrlEncodedFormEntity(postParams, "utf-8"));
-            res = httpClient.execute(request);
-        }catch (IOException e){
-            e.printStackTrace();
+    public String Post() {
+        Log.d("aaa", mUri);
+        Post post = new Post(mUri,postParams);
+        String res = "";
+        try{
+            Thread thPost = new Thread(post);
+            thPost.start();
+            thPost.join();
+            res = post.getResponse();
+
+        }catch (Exception e){
+
         }
+        Log.d("aaa",res);
+        return res;
     }
 }
