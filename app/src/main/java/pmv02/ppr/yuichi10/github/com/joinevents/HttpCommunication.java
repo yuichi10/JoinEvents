@@ -19,6 +19,7 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * Created by yuichi on 8/25/15.
@@ -29,16 +30,27 @@ public class HttpCommunication {
     //Post parameters
     List<NameValuePair> postParams = new ArrayList<NameValuePair>();
 
+    public interface HttpCommunicationCallBack {
+        public void getResponse(String str);
+    }
+
+    private HttpCommunicationCallBack _httpCommunicationCallBack;
+
+    public void setCallbacks(HttpCommunicationCallBack myClassCallbacks){
+        _httpCommunicationCallBack = myClassCallbacks;
+    }
+
 
     public HttpCommunication(String serverName, String path){
         //Uri for get
         mBuilder = new Uri.Builder();
         setServerName(serverName);
+
         if(path != "") {
             mBuilder.path("/" + path);
         }
         //Uri for post
-        mUri = "http://" + serverName + "/" + path;
+        mUri = "http://" + serverName + DataManage.port + "/" + path;
     }
 
     public HttpCommunication(String serverName){
@@ -46,7 +58,7 @@ public class HttpCommunication {
         mBuilder = new Uri.Builder();
         setServerName(serverName);
         //Uri for post
-        mUri = "http://" + serverName;
+        mUri = "http://" + serverName + DataManage.port;
     }
 
     private void setServerName(String str){

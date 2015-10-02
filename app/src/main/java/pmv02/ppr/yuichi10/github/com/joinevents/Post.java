@@ -29,6 +29,7 @@ public class Post implements Runnable {
     public void run() {
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(mUrl);
+        Log.v("POST", mUrl);
         try {
             post.setEntity(new UrlEncodedFormEntity(mParams, "UTF-8"));// 文字コード変換
             // リクエスト送信

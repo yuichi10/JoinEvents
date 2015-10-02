@@ -4,6 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,6 +26,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"/>
     </LinearLayout>
+    <TextView
+        android:id="@+id/signUpEmail_t_err"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,6 +50,10 @@
             android:inputType="textPassword"
             android:layout_weight="2"/>
     </LinearLayout>
+    <TextView
+        android:id="@+id/signUpPassword_t_err"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -62,6 +74,10 @@
             android:inputType="textPassword"
             android:layout_weight="2"/>
     </LinearLayout>
+    <TextView
+        android:id="@+id/signUpPassword2_t_err"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -80,6 +96,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"/>
     </LinearLayout>
+    <TextView
+        android:id="@+id/signUpName_t_err"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
 
     <RadioGroup
         android:id="@+id/signUpGender"
@@ -94,11 +114,41 @@
             android:text="@string/signUpGenderMan"/>
 
         <RadioButton
-            android:id="@+id/feMail"
+            android:id="@+id/signUpFemale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/signUpGenderWoman"/>
     </RadioGroup>
+
+    <TextView
+        android:id="@+id/signUpGender_t_err"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/signUpAge_t"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Age"/>
+        <EditText
+            android:id="@+id/signUpAge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:width="100dp"/>
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/signUpAge_t_err"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+
+
 
     <LinearLayout
         android:layout_width="wrap_content"
