@@ -8,6 +8,7 @@ public class DataManage {
     //static String server = "115.65.57.253:8989";
     //static String server = "192.168.11.5";
     final static String server = "192.168.11.3";
+    //final static String server = "192.168.179.13";
     //static String server = "172.17.194.69";
     final static String port   = ":8989";
     //use these ward when connect to server

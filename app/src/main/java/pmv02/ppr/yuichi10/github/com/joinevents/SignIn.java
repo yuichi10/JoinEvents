@@ -23,14 +23,18 @@ public class SignIn extends ActionBarActivity implements View.OnClickListener{
     static String packageName = "pmv02.ppr.yuichi10.github.com.joinevents";
 
     //data for json analyze
-    static String errPasskey = "ErrPass";
-    static String errIdkey   = "ErrId";
+    static String ISERR = "is_err";
+    static String errPasskey = "pass_err";
+    static String errIdkey   = "id_err";
+    static String errDescription = "err_description";
     static String sessionKey = "SessionId";
 
     //data responses
     String errPassword = "";
     String errId       = "";
     String mSessionID   = "";
+    boolean mIsErr;
+    String mErrDescription = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +80,7 @@ public class SignIn extends ActionBarActivity implements View.OnClickListener{
         switch (v.getId()){
             //when sing in button was pushed
             case R.id.doSignIn:
-                //get server info
+                //get server inf
                 String server = DataManage.server;
                 String path   = "login";
                 //get ID and password
@@ -86,8 +90,12 @@ public class SignIn extends ActionBarActivity implements View.OnClickListener{
                 hc.setPostParameter("Id", strID);
                 hc.setPostParameter("Password", strPass);
                 String response = hc.Post();
-                analyseJson(response);
 
+                analyseJson(response);
+                Log.d("bbb", " try sign in " + response);
+                if(mIsErr || response == "" || response == null){
+                    return;
+                }
                 //if the password and ID was collect, go to Home activity
                 intent.setClassName(packageName, packageName + ".Home");
                 startActivity(intent);
@@ -104,12 +112,19 @@ public class SignIn extends ActionBarActivity implements View.OnClickListener{
     public void analyseJson(String jStr){
         try {
             JSONObject json = new JSONObject(jStr);
-            this.errPassword = json.getString(errPasskey);
-            this.errId       = json.getString(errIdkey);
-            this.mSessionID   = json.getString(sessionKey);
-            Log.d("aaa",errPassword);
-            Log.d("aaa",errId);
-            Log.d("aaa",mSessionID);
+            this.mIsErr     = json.getBoolean(ISERR);
+            Log.d("bbb", "check err:" + mIsErr);
+            Log.d("bbb", "json :"  + jStr);
+            if(mIsErr) {
+                this.errPassword = json.getString(errPasskey);
+                this.errId = json.getString(errIdkey);
+                this.mErrDescription = json.getString(errDescription);
+                //this.mSessionID = json.getString(sessionKey);
+                Log.d("bbb", errPassword);
+                Log.d("bbb", errId);
+                Log.d("bbb", mSessionID);
+                Log.d("bbb", mErrDescription);
+            }
         }catch (Exception e){
 
         }
